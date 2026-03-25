@@ -31,9 +31,7 @@ from typing import Optional
 from utils.dom_tree import DOMNode
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # Data structures
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 @dataclass
@@ -58,9 +56,7 @@ class MatchResult:
         return 2 * self.score / total
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # Helpers
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 def _subtree_size(node: DOMNode) -> int:
@@ -73,9 +69,7 @@ def _tag_path(node: DOMNode, path: tuple[str, ...] = ()) -> str:
     return ">".join(path + (node.tag,))
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # 1. Multi-Depth Hashing
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 def _compute_depth_hashes(
@@ -162,9 +156,7 @@ def multi_depth_match(
     )
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # 2. Simple Tree Matching (STM)
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 def _stm_score(node_a: DOMNode, node_b: DOMNode, memo: dict) -> int:
@@ -237,9 +229,7 @@ def _stm_aligned_depth(node_a: DOMNode, node_b: DOMNode, memo: dict) -> int:
     return 1 + max_child_depth
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # 3. Tag-Path Anchoring
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 def _collect_nodes_by_path(
@@ -260,9 +250,7 @@ def _collect_nodes_by_path(
     return result
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # Combined: Tag-Path Anchoring → STM → Best Pair
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 def find_best_subtree_match(
@@ -376,15 +364,13 @@ def _mark_descendants(node: DOMNode, seen: set[int]) -> None:
         _mark_descendants(child, seen)
 
 
-# ═══════════════════════════════════════════════════════════════════════════
 # Convenience: combined similarity score
-# ═══════════════════════════════════════════════════════════════════════════
 
 
 def subtree_similarity(tree_a: DOMNode, tree_b: DOMNode) -> float:
     """Return a [0, 1] similarity score based on the best subtree match.
 
-    This is a drop-in companion to ``matcher.tree_similarity`` but focuses
+    This is a drop-in companion to ``dom_similarity.compute_similarity`` but focuses
     on the *best matching region* rather than the whole-tree fingerprint.
     """
     matches = find_best_subtree_match(tree_a, tree_b, top_k=1)

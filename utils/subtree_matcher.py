@@ -1,26 +1,3 @@
-"""Subtree matching between DOM trees using three complementary strategies.
-
-Implements the algorithms described in the design doc:
-
-1. **Multi-Depth Hashing** — For each node, compute depth-bounded hashes
-   (d=0..k). Two nodes that share the same hash at depth d are structurally
-   identical up to d levels.  The pair with the highest matching depth is the
-   best match.  Good for batch/indexed comparison across many trees.
-
-2. **Simple Tree Matching (STM)** — DP-based recursive algorithm that scores
-   how many nodes two subtrees share (order-preserving child alignment).
-   Naturally handles leaf-level differences because unmatched leaves simply
-   don't contribute rather than ruining a hash.
-
-3. **Tag-Path Anchoring** — Narrows the search space by only comparing nodes
-   that sit at the same root-to-node tag path (e.g. ``html>body>div>ul``).
-   Pages sharing a template will have many overlapping paths, so this
-   dramatically reduces the number of candidate pairs fed into STM.
-
-The recommended combined approach for same-template pages:
-   Tag-path anchoring → STM on candidate pairs → highest-scoring pair.
-"""
-
 from __future__ import annotations
 
 import hashlib

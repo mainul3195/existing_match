@@ -22,4 +22,6 @@ Thumbs.db
 .env
 
 # Database (large, regenerable)
-db.json
+db.sqlite
+db.sqlite-shm
+db.sqlite-wal
